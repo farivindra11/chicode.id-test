@@ -1,0 +1,30 @@
+.confirm {
+  border-top: 5px solid blue !important;
+  border-radius: 0;
+}
+.recover {
+  border-top: 5px solid green !important;
+  border-radius: 0;
+}
+.death {
+  border-top: 5px solid red !important;
+  border-radius: 0;
+}
+
+.testing {
+  --bs-gutter-x: 0.5rem;
+}
+h4 {
+  color: rgb(161, 161, 161);
+}
+.btn:focus {
+  box-shadow: none;
+}
+.drop {
+  background-color: #fff;
+  border-color: #fff;
+  color: rgb(175, 174, 174);
+}
+.tableScroll {
+  max-height: 100px;
+}
