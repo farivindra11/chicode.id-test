@@ -20,8 +20,5 @@ export function getDailySummary() {
   return http.get("/daily");
 }
 export function getDaily() {
-  const startDate = new Date();
-  const date = new Date();
-
   return http.get("/daily/5-21-2021");
 }

@@ -1,29 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import { getDailySummary } from "../../services/index"
-export default function Chart({ data }) {
-    const [daily, setDaily] = useState([])
+export default function Chart({ data, data2, type, name1, name2 }) {
 
 
-    const confirm = () => {
-        getDailySummary().then(res => {
-            const data = res.data
-
-            const modify = data.map((item) => ({
-                confirmed: item.confirmed.total,
-                deaths: item.deaths.total,
-                date: item.reportDate
-            }))
-            setDaily(modify)
-        })
-    }
-
-
-
-    useEffect(() => {
-        confirm()
-    }, [])// eslint-disable-next-line
 
 
     const options = {
@@ -33,8 +13,8 @@ export default function Chart({ data }) {
         },
 
         chart: {
-            type: "spline",
-            height: "570px"
+            type: `${type}`,
+            height: "550px"
         },
 
         yAxis: {
@@ -43,29 +23,53 @@ export default function Chart({ data }) {
             },
         },
 
-        xAxis: {
+        xAxis: data ? {
             categories: data.map(({ date }) => date)
-        },
+        } : {
+                categories: data2.map(({ countryRegion }) => countryRegion)
+            },
 
         plotOptions: {
-            series: {
+            series: data ? {
                 dataLabels: {
                     enabled: true,
                 },
-            },
+            } : {
+                    stacking: 'normal',
+                    borderWidth: 0,
+                    pointPadding: 0.1,
+                    groupPadding: 0
+                }
         },
 
-        series: [
-            {
-                name: "Confirmed",
-                data: data.map(({ confirmed }) => confirmed),
+        legend: data2 ? {
+            enabled: false
+        } : {
+                enabled: true
             },
-            {
-                name: "Deaths",
-                data: data.map(({ deaths }) => deaths),
-                color: '#ff0000',
-            },
-        ],
+
+        series:
+            data ?
+                [
+                    {
+                        name: `${name1}`,
+                        data: data.map(({ confirmed }) => confirmed),
+                    },
+                    {
+                        name: `${name2}`,
+                        data: data.map(({ deaths }) => deaths),
+                        color: '#ff0000',
+                    },
+                ] : [
+                    {
+
+                        data: data2.map(({ recovered }) => recovered),
+                    },
+                    {
+                        data: data2.map(({ countryRegion }) => countryRegion),
+                        color: '#ff0000',
+                    },
+                ]
     };
     return (
         <div>

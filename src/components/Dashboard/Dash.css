@@ -25,6 +25,14 @@ h4 {
   border-color: #fff;
   color: rgb(175, 174, 174);
 }
+.end {
+  background-color: #fff;
+  border-color: #fff;
+  color: rgb(21, 170, 21);
+}
+.end:focus {
+  box-shadow: none;
+}
 .tableScroll {
   max-height: 100px;
 }

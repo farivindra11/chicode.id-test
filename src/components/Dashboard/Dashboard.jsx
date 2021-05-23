@@ -5,8 +5,7 @@ import Chart from '../Chart/Chart'
 import CountUp from "react-countup"
 import Footer from '../Footer/Footer'
 import ChartSide from '../Chart/ChartSide'
-import ChartBottom from '../Chart/ChartBottom'
-import { getData, getConfirmed, getDailySummary } from '../../services/index'
+import { getData, getConfirmed, getDailySummary, getRecovered } from '../../services/index'
 import "./Dash.css"
 
 export default function Dashboard() {
@@ -17,8 +16,10 @@ export default function Dashboard() {
     const [lastUpdated, setLastUpdated] = useState("")
     const [chartSide, setChartSide] = useState([])
     const [daily, setDaily] = useState([])
+    const [highRecover, setHighRecover] = useState([])
 
-    const sideBarData = () => {  //side stackedbar chart data
+
+    const sideBarData = () => {  //side stackedbar chart data highest confirm cases
         getConfirmed().then(res => {
             const val = res.data
 
@@ -37,7 +38,26 @@ export default function Dashboard() {
         })
     }
 
-    const mainData = () => { // main card data
+    const BottomBarData = () => {
+        getRecovered().then(res => {
+            const data = res.data
+
+            let recover = []
+            let i = 0
+            while (i < 7) {
+                recover.push(data[i])
+                i++
+            }
+
+            const modify = recover.map(item => ({
+                recovered: item.recovered,
+                countryRegion: item.countryRegion
+            }))
+            setHighRecover(modify)
+        })
+    }
+
+    const mainData = () => { // main card data global data
         getData().then(res => {
             const { confirmed, lastUpdate, recovered, deaths } = res.data;
             setConfirm(confirmed.value)
@@ -48,7 +68,7 @@ export default function Dashboard() {
     }
 
 
-    const lineChartData = () => {  //line Chart
+    const lineChartData = () => {  //line Chart global data
         getDailySummary().then(res => {
             const data = res.data
 
@@ -62,10 +82,13 @@ export default function Dashboard() {
     }
 
 
+
+
     useEffect(() => {
         mainData()
         sideBarData()
         lineChartData()
+        BottomBarData()
     }, [])// eslint-disable-next-line
     return (
         <div>
@@ -137,7 +160,13 @@ export default function Dashboard() {
                                     </div>
                                     <div className="card">
                                         <div className="col-md-12">
-                                            <Chart data={daily} />
+                                            <Chart
+                                                data={daily}
+                                                type="spline"
+                                                name1="confirmed"
+                                                name2="deaths"
+                                                category={daily.map(({ date }) => date)}
+                                            />
                                         </div>
                                     </div>
                                     <div className="dropdown">
@@ -249,15 +278,31 @@ export default function Dashboard() {
                                                     </tbody>
                                                 </table>
                                             </div>
+
                                             <div className="dropdown">
-                                                <button className="btn drop dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    Last 7 days
-                                                </button>
-                                                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                    <li><a className="dropdown-item" href="#">Action</a></li>
-                                                    <li><a className="dropdown-item" href="#">Another action</a></li>
-                                                    <li><a className="dropdown-item" href="#">Something else here</a></li>
-                                                </ul>
+                                                <div>
+
+                                                    <button className="btn drop dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        Last 7 days
+                                                    </button>
+                                                    <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                        <li><a className="dropdown-item" href="#">Action</a></li>
+                                                        <li><a className="dropdown-item" href="#">Another action</a></li>
+                                                        <li><a className="dropdown-item" href="#">Something else here</a></li>
+                                                    </ul>
+                                                    <div className="btn-group dropend float-end">
+                                                        <button className="btn end dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            Last Reports
+                                                    </button>
+                                                        <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                            <li><a className="dropdown-item" href="#">Action</a></li>
+                                                            <li><a className="dropdown-item" href="#">Another action</a></li>
+                                                            <li><a className="dropdown-item" href="#">Something else here</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
+
                                             </div>
 
                                         </div>
@@ -270,7 +315,7 @@ export default function Dashboard() {
                                                 <table className="table table-sm">
                                                     <thead>
                                                         <tr>
-                                                            <th>Header</th>
+                                                            <th>Countries</th>
                                                             <th>Header</th>
                                                             <th>Header</th>
                                                         </tr>
@@ -305,14 +350,29 @@ export default function Dashboard() {
                                                 </table>
                                             </div>
                                             <div className="dropdown">
-                                                <button className="btn drop dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    Last 7 days
-                                                </button>
-                                                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                    <li><a className="dropdown-item" href="#">Action</a></li>
-                                                    <li><a className="dropdown-item" href="#">Another action</a></li>
-                                                    <li><a className="dropdown-item" href="#">Something else here</a></li>
-                                                </ul>
+                                                <div>
+
+                                                    <button className="btn drop dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        Last 7 days
+                                                    </button>
+                                                    <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                        <li><a className="dropdown-item" href="#">Action</a></li>
+                                                        <li><a className="dropdown-item" href="#">Another action</a></li>
+                                                        <li><a className="dropdown-item" href="#">Something else here</a></li>
+                                                    </ul>
+                                                    <div className="btn-group dropend float-end">
+                                                        <button className="btn end dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            Last Reports
+                                                    </button>
+                                                        <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                            <li><a className="dropdown-item" href="#">Action</a></li>
+                                                            <li><a className="dropdown-item" href="#">Another action</a></li>
+                                                            <li><a className="dropdown-item" href="#">Something else here</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -328,9 +388,18 @@ export default function Dashboard() {
                         <div className="row">
                             <div className="col-md-12">
                                 <h4>How's Your social activity?</h4>
-                                <div className="card">
-                                    <ChartBottom />
+                                <div className="card border-0">
+                                    <div className="col-md-9 border-0">
+                                        <div className="row">
+                                            <div className="col-md-3">Recovered</div>
+                                            <div className="col-md-3">Activity</div>
+                                            <div className="col-md-3">Vacinated</div>
+                                        </div>
+                                    </div>
                                 </div>
+                            </div>
+                            <div className="col-md-12">
+                                <Chart data2={highRecover} type="column" />
                             </div>
                         </div>
 

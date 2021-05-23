@@ -7,7 +7,7 @@ export default function Chart({ data }) {
         chart: {
             type: 'column',
             backgroundColor: '#0d6efd',
-            height: '300px',
+            height: '56.7%',
 
         },
         title: {
