@@ -3,7 +3,16 @@
   height: 16px;
   vertical-align: text-bottom;
 }
-
+.rounded-circle {
+  width: 50%;
+  height: 50%;
+  border-radius: 40%;
+  background-color: rgb(207, 207, 206);
+}
+.px-3 {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
 /*
    * Sidebar
    */

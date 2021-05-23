@@ -19,6 +19,7 @@ export default function Dashboard() {
     const [highRecover, setHighRecover] = useState([])
 
 
+
     const sideBarData = () => {  //side stackedbar chart data highest confirm cases
         getConfirmed().then(res => {
             const val = res.data
@@ -38,7 +39,7 @@ export default function Dashboard() {
         })
     }
 
-    const BottomBarData = () => {
+    const BottomBarData = () => {  //barchart bottom data
         getRecovered().then(res => {
             const data = res.data
 
@@ -78,6 +79,18 @@ export default function Dashboard() {
                 date: item.reportDate
             }))
             setDaily(modify)
+        })
+    }
+
+    const tableBottom = () => {  //table bottom
+        return highRecover.map((key, i) => {
+            return (
+                <tr key={i}>
+                    <td className="text-success">{key.countryRegion}</td>
+                    <td>{key.recovered}</td>
+                    <td>{i + 1}</td>
+                </tr>
+            )
         })
     }
 
@@ -244,44 +257,19 @@ export default function Dashboard() {
                                                 <table className="table table-sm">
                                                     <thead className="table2 text-secondary">
                                                         <tr>
-                                                            <th className="fw-normal">Header</th>
-                                                            <th className="fw-normal">Header</th>
-                                                            <th className="fw-normal">Header</th>
+                                                            <th className="fw-normal">Country</th>
+                                                            <th className="fw-normal">Recover</th>
+                                                            <th className="fw-normal">Rank</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-
-                                                            <td className="text-success">data</td>
-                                                            <td>placeholder</td>
-                                                            <td>text</td>
-                                                        </tr>
-                                                        <tr>
-
-                                                            <td className="text-success">irrelevant</td>
-                                                            <td>visual</td>
-                                                            <td>layout</td>
-                                                        </tr>
-                                                        <tr>
-
-                                                            <td className="text-success">irrelevant</td>
-                                                            <td>visual</td>
-                                                            <td>layout</td>
-                                                        </tr>
-                                                        <tr>
-
-                                                            <td className="text-success">irrelevant</td>
-                                                            <td>visual</td>
-                                                            <td>layout</td>
-                                                        </tr>
-
+                                                        {tableBottom()}
                                                     </tbody>
                                                 </table>
                                             </div>
 
                                             <div className="dropdown">
                                                 <div>
-
                                                     <button className="btn drop dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                                         Last 7 days
                                                     </button>
@@ -301,10 +289,7 @@ export default function Dashboard() {
                                                         </ul>
                                                     </div>
                                                 </div>
-
-
                                             </div>
-
                                         </div>
                                     </div>
 
@@ -313,45 +298,20 @@ export default function Dashboard() {
                                         <div className="card">
                                             <div className="table-responsive">
                                                 <table className="table table-sm">
-                                                    <thead>
+                                                    <thead className="text-secondary">
                                                         <tr>
-                                                            <th>Countries</th>
-                                                            <th>Header</th>
-                                                            <th>Header</th>
+                                                            <th className="fw-normal">Country Region</th>
+                                                            <th className="fw-normal">Recovery</th>
+                                                            <th className="fw-normal">Rank</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-
-                                                            <td className="text-success">data</td>
-                                                            <td>placeholder</td>
-                                                            <td>text</td>
-                                                        </tr>
-                                                        <tr>
-
-                                                            <td className="text-success">irrelevant</td>
-                                                            <td>visual</td>
-                                                            <td>layout</td>
-                                                        </tr>
-                                                        <tr>
-
-                                                            <td className="text-success">irrelevant</td>
-                                                            <td>visual</td>
-                                                            <td>layout</td>
-                                                        </tr>
-                                                        <tr>
-
-                                                            <td className="text-success">irrelevant</td>
-                                                            <td>visual</td>
-                                                            <td>layout</td>
-                                                        </tr>
-
+                                                        {tableBottom()}
                                                     </tbody>
                                                 </table>
                                             </div>
                                             <div className="dropdown">
                                                 <div>
-
                                                     <button className="btn drop dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                                         Last 7 days
                                                     </button>
@@ -371,27 +331,21 @@ export default function Dashboard() {
                                                         </ul>
                                                     </div>
                                                 </div>
-
-
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
-
-
                             </div>
                         </div>
                         <br />
-
-
+                        <br />
                         <div className="row">
                             <div className="col-md-12">
                                 <h4>How's Your social activity?</h4>
-                                <div className="card border-0">
+                                <div className="card border-0 cardBot">
                                     <div className="col-md-9 border-0">
                                         <div className="row">
-                                            <div className="col-md-3">Recovered</div>
+                                            <div className="col-md-3 cardRecov">Recovered</div>
                                             <div className="col-md-3">Activity</div>
                                             <div className="col-md-3">Vacinated</div>
                                         </div>
@@ -399,11 +353,9 @@ export default function Dashboard() {
                                 </div>
                             </div>
                             <div className="col-md-12">
-                                <Chart data2={highRecover} type="column" />
+                                <Chart data2={highRecover} type="column" hight="400px" />
                             </div>
                         </div>
-
-
                         <br />
                         <br />
                         <Footer />

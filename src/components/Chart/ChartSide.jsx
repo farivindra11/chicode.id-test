@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 export default function Chart({ data }) {
@@ -7,7 +7,7 @@ export default function Chart({ data }) {
         chart: {
             type: 'column',
             backgroundColor: '#0d6efd',
-            height: '56.7%',
+            height: '355px',
 
         },
         title: {

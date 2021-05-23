@@ -1,9 +1,7 @@
 import React from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-export default function Chart({ data, data2, type, name1, name2 }) {
-
-
+export default function Chart({ data, data2, type, name1, name2, hight }) {
 
 
     const options = {
@@ -14,7 +12,7 @@ export default function Chart({ data, data2, type, name1, name2 }) {
 
         chart: {
             type: `${type}`,
-            height: "550px"
+            height: hight ? `${hight}` : '70%%'
         },
 
         yAxis: {
